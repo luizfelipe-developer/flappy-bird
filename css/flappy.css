@@ -35,10 +35,10 @@ body {
     background-color: deepskyblue;
 }
 .passaro{
-    position: inherit;
+    position: absolute;
     width: 60px;
     left: calc(50% - 30px);
-    top: 50%;
+    /* top: 50%; */
 }
 
 .par-de-barreiras{

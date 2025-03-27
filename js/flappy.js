@@ -36,7 +36,7 @@ function ParDeBarreiras(altura, abertura, x){
     this.superior.setAltura(alturaSupeior);
     this.inferior.setAltura(alturaInferior);
   }
-  this.getX = ()=> parent(this.elemento.style.left.split('px'));
+  this.getX = ()=> parseInt(this.elemento.style.left.split('px')[0]);
 
   this.setX = x => this.elemento.style.left = `${x}px`;
 
@@ -62,7 +62,7 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto){
         par.setX(par.getX() - deslocamento);
 
         if(par.getX()< -par.getLargura()){
-          par.setX(par.getX()=espaco * this.pares.length);
+          par.setX(par.getX()+espaco * this.pares.length);
           par.sortearAbertura();
         }
         const meio = largura /2;
@@ -71,12 +71,39 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto){
       })
   }  
 }
+
+function Passaro (alturaDoJogo){
+  let voando = false;
+  
+  this.elemento = newElement('img', 'passaro')
+  this.elemento.src = './imagens/passaro.png'
+  
+  this.getX = () =>parseInt(this.elemento.style.bottom.split('px')[0]);
+  this.setY = () => this.elemento.style.buttom = `${y}px`;
+  
+  window.onkeydown = e => voando = true;
+  window.onkeyup = e => voando = false;
+  
+  this.animar = () =>{
+    const novoY = this.getX()+(voando? 8 : -5);
+    const alturaMax = alturaDoJogo - this.elemento.clientHeight;
+    
+    if(novoY <= 0){
+      this.setY(0);
+    }else if (novoY >= alturaMax){
+      this.setY(alturaMax);
+    } else {
+      this.setY(novoY);
+    }
+  }
+  this.setY(alturaDoJogo/2)
+}
 const barreiras = new Barreiras(700, 1200, 200, 400);
+const passaro = new Passaro(700);
+areaDoJogo.appendChild(passaro.elemento);
 const areaDoJogo = document.querySelector('[tp-flappy]');
 barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento));
 setInterval(()=>{
   barreiras.animar();
+  passaro.animar();
 }, 20)
-function modificarPoint() {
-  
-}
